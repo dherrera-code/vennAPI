@@ -1,0 +1,6 @@
+@vennAPI_HostAddress = http://localhost:5197
+
+GET {{vennAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
