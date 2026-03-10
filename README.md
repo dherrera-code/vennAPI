@@ -3,7 +3,10 @@
 ### Link to hosted API
 https://venngroupapi-emashqggf5gphwax.westus3-01.azurewebsites.net/
 
+The Following endpoints have been implemented:
 
+UserController:
+    - Login, CreateUser
 ## Project Goal
 
 Create a backend for our Venn FullStack application!
