@@ -116,5 +116,14 @@ namespace vennAPI.Services
             return user;
 
         }
+
+        public async Task<bool> DeleteUser(string userToRemove)
+        {
+            var user = await GetUserInfoByUsernameAsync(userToRemove);
+            if(user == null) return false;
+
+            _dataContext.Users.Remove(user);
+            return await _dataContext.SaveChangesAsync() != 0;
+        }
     }
 }

@@ -37,11 +37,15 @@ namespace vennAPI.Controllers
             return Unauthorized(new {Message = "Login was unsuccessful"});
         }
 
-        // [HttpPost("DeleteUser/{userToDelete}")]
-        // public bool DeleteUser(string userToRemove)
-        // {
-        //     return _userService.DeleteUser(userToRemove);
-        // }
+        [HttpPost("DeleteUser/{userToDelete}")]
+        public async Task<IActionResult> DeleteUser(string userToDelete)
+        {
+            var success = await _userService.DeleteUser(userToDelete);
+
+            if(success != null) return Ok(new {Message = "Account Removed!"});
+
+            return BadRequest(new {Message = "Unable to Remove Account!"});
+        }
 
         // [HttpPut("UpdateUsername")]
         // public bool UpdateUsername(int id, string username)
