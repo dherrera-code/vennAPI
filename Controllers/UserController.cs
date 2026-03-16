@@ -57,7 +57,7 @@ namespace vennAPI.Controllers
 
             return BadRequest(new {message = "No User Found"});
         }
-        [HttpPut("UpdateUsername")]
+        [HttpPut("UpdateUsername/{id}/{newUsername}")]
         public async Task<IActionResult> UpdateUsername(int id, string newUsername)
         {
             var success = await _userService.EditUsername(id, newUsername);
