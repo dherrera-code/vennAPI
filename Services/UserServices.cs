@@ -105,6 +105,5 @@ namespace vennAPI.Services
                 Hash = hash
             };
         }
-    
     }
 }

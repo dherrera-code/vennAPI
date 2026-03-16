@@ -15,7 +15,16 @@ Create a backend for our Venn FullStack application!
 
 ## Controllers Needed!:
 
+
 ### UserController
+
+- createAccount
+- login
+- removeAccount
+- updateUsername
+- updateUserEmail
+- GetUserByUsername
+- GetUserByUserId
 
 ### RoomController
 
