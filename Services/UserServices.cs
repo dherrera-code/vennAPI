@@ -105,5 +105,16 @@ namespace vennAPI.Services
                 Hash = hash
             };
         }
+
+        public async Task<UserInfoDTO> GetUserInfoDTOByUsernameAsync(string username)
+        {
+            var currentUser = await _dataContext.Users.SingleOrDefaultAsync(user => user.Username == username);
+
+            UserInfoDTO user = new();
+            user.Id = currentUser.Id;
+            user.Username = currentUser.Username;
+            return user;
+
+        }
     }
 }

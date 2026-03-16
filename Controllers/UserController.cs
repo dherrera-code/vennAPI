@@ -52,7 +52,7 @@ namespace vennAPI.Controllers
         [HttpGet("GetUserByUsername/{username}")]
         public async Task<IActionResult> GetUserByUsername(string username)
         {
-            var user = await _userService.GetUserInfoByUsernameAsync(username);
+            var user = await _userService.GetUserInfoDTOByUsernameAsync(username);
             
             if(user != null) return Ok(user);
 
