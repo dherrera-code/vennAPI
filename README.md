@@ -27,7 +27,7 @@ Create a backend for our Venn FullStack application!
 
 ### RoomController
 
-getAllROom
+getAllRoom
 getRoomsByIsActive
 getRoomsByCategory
 getRooms
@@ -36,6 +36,7 @@ getRooms
 
 UserModel (For users to login)
 RoomInfoModel ()
+RoomMembersModel (used to list members based on Room Id)
 ProfileModel
 FriendsModel
 DTO models

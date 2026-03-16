@@ -12,7 +12,6 @@ namespace vennAPI.Models
         public string? Title { get; set; }
         public string? Category { get; set; }
         public DateTime EventDate { get; set; }
-        // public string? RoomPath { get; set; }
         public List<int>? UsersInRoomList { get; set; }
         public TimeOnly GoldenHour { get; set; }
         public bool IsRoomActive { get; set; }
