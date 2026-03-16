@@ -22,7 +22,9 @@ namespace vennAPI.Services
             return await _dataContext.SaveChangesAsync() != 0;
         }
         public async Task<List<RoomModel>> GetAllRoomsAsync() => await _dataContext.Rooms.ToListAsync();
-        
-        
+        public async Task<RoomModel> GetRoomByRoomIdAsync(int roomId)
+        {
+            return await _dataContext.Rooms.FindAsync(roomId);
+        }
     }
 }

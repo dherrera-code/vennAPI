@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using vennAPI.Models;
 using vennAPI.Services;
@@ -10,6 +11,7 @@ namespace vennAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class RoomController : ControllerBase
     {
         private readonly RoomServices _roomService;
@@ -30,6 +32,16 @@ namespace vennAPI.Controllers
             if (success) return Ok(new {success});
 
             return BadRequest(new {success});
+        }
+
+        [HttpGet("GetRoomDetails/{roomId}")]
+        public async Task<IActionResult> GetRoomById(int roomId)
+        {
+            var room = await _roomService.GetRoomByRoomIdAsync(roomId);
+
+            if (room != null) return Ok(new {room}); 
+
+            return NotFound(new { message = "No room found!"});
         }
 
     }
