@@ -47,7 +47,6 @@ namespace vennAPI.Controllers
             return BadRequest(new {Message = "Unable to Remove Account!"});
         }
 
-
         [HttpGet("GetUserByUsername/{username}")]
         public async Task<IActionResult> GetUserByUsername(string username)
         {
@@ -57,6 +56,7 @@ namespace vennAPI.Controllers
 
             return BadRequest(new {message = "No User Found"});
         }
+
         [HttpPut("UpdateUsername/{id}/{newUsername}")]
         public async Task<IActionResult> UpdateUsername(int id, string newUsername)
         {
@@ -66,5 +66,6 @@ namespace vennAPI.Controllers
 
             return BadRequest(new {Message = "Updating Username Failed! New Username may already be created!"});
         }
+        
     }
 }
