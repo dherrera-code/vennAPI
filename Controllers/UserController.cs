@@ -24,7 +24,7 @@ namespace vennAPI.Controllers
         {
             bool success = await _userService.CreateAccount(newUser);
             if(success) return Ok(new {success =  true, Message = "User Created!"});
-            return BadRequest(new {Success = false, Message = "User Creation failed! Email is already in use!"});
+            return BadRequest(new {Success = false, Message = "User Creation failed! Email is already in use or Username is already taken!"});
         }
         
         [HttpPost("Login")]
@@ -47,11 +47,6 @@ namespace vennAPI.Controllers
             return BadRequest(new {Message = "Unable to Remove Account!"});
         }
 
-        // [HttpPut("UpdateUsername")]
-        // public bool UpdateUsername(int id, string username)
-        // {
-        //     return _userService.UpdateUsername(id, username);
-        // }
 
         [HttpGet("GetUserByUsername/{username}")]
         public async Task<IActionResult> GetUserByUsername(string username)
@@ -61,6 +56,15 @@ namespace vennAPI.Controllers
             if(user != null) return Ok(user);
 
             return BadRequest(new {message = "No User Found"});
+        }
+        [HttpPut("UpdateUsername")]
+        public async Task<IActionResult> UpdateUsername(int id, string newUsername)
+        {
+            var success = await _userService.EditUsername(id, newUsername);
+
+            if(success) return Ok(new {success});
+
+            return BadRequest(new {Message = "Updating Username Failed! New Username may already be created!"});
         }
     }
 }

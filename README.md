@@ -22,7 +22,6 @@ Create a backend for our Venn FullStack application!
 - login
 - removeAccount
 - updateUsername
-- updateUserEmail
 - GetUserByUsername
 - GetUserByUserId
 

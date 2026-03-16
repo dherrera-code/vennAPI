@@ -27,6 +27,8 @@ namespace vennAPI.Services
         {
             if(await DoesUserExistEmail(newUser.Email)) return false;
 
+            if(await DoesUsernameExist(newUser.Username)) return false;
+
             UserModel createUser =  new();
             PasswordDTO EncryptedPassword = HashPassword(newUser.Password);
             createUser.Username = newUser.Username;
@@ -84,8 +86,12 @@ namespace vennAPI.Services
         // function to getUserInfoByUsernameAsync to verify user's credentials
         public async Task<UserModel> GetUserInfoByUsernameAsync(string username) => await _dataContext.Users.SingleOrDefaultAsync(user => user.Username == username);
 
+        public async Task<UserModel> GetUserInfoByUserIdAsync(int id) => await _dataContext.Users.SingleOrDefaultAsync(user => user.Id == id);
+
         //Create a helper function to Check if user exist or not!
         private async Task<bool> DoesUserExistEmail(string email) => await _dataContext.Users.SingleOrDefaultAsync(user => user.Email == email) != null;
+
+        private async Task<bool> DoesUsernameExist(string username) => await _dataContext.Users.SingleOrDefaultAsync(user => user.Username == username) != null;
         
         // Helper function to HashPassword!
         private static PasswordDTO HashPassword(string password)
@@ -114,8 +120,8 @@ namespace vennAPI.Services
             user.Id = currentUser.Id;
             user.Username = currentUser.Username;
             return user;
-
         }
+
 
         public async Task<bool> DeleteUser(string userToRemove)
         {
@@ -123,6 +129,20 @@ namespace vennAPI.Services
             if(user == null) return false;
 
             _dataContext.Users.Remove(user);
+            return await _dataContext.SaveChangesAsync() != 0;
+        }
+
+        public async Task<bool> EditUsername(int id, string newUsername)
+        {
+            //If new username already exist, then return false!
+            if(await DoesUsernameExist(newUsername)) return false;
+
+            var findUser = await GetUserInfoByUserIdAsync(id);
+            //If user to update isn't found return false
+            if(findUser == null) return false;
+
+            findUser.Username = newUsername;
+            _dataContext.Users.Update(findUser);
             return await _dataContext.SaveChangesAsync() != 0;
         }
     }
