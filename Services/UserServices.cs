@@ -61,8 +61,8 @@ namespace vennAPI.Services
             var SigningCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
             var tokenOptions = new JwtSecurityToken( //our token is now valid for our web app
-                issuer: "https://danielcsablog-ayggegdsc3bcgqhs.westus3-01.azurewebsites.net/",
-                audience: "https://danielcsablog-ayggegdsc3bcgqhs.westus3-01.azurewebsites.net/",
+                issuer: "https://venngroupapi-emashqggf5gphwax.westus3-01.azurewebsites.net/",
+                audience: "https://venngroupapi-emashqggf5gphwax.westus3-01.azurewebsites.net/",
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: SigningCredentials
