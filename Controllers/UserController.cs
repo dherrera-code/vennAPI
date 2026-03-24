@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using vennAPI.Models;
 using vennAPI.Models.DTO;
 using vennAPI.Services;
 
@@ -11,13 +12,9 @@ namespace vennAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : ControllerBase
+    public class UserController(UserServices userService) : ControllerBase
     {
-        private readonly UserServices _userService;
-        public UserController(UserServices userService)
-        {
-            _userService = userService;
-        }
+        private readonly UserServices _userService = userService;
 
         [HttpPost("CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody]CreateAccountDTO newUser)
@@ -42,7 +39,7 @@ namespace vennAPI.Controllers
         {
             var success = await _userService.DeleteUser(userToDelete);
 
-            if(success != null) return Ok(new {Message = "Account Removed!"});
+            if(success) return Ok(new {Message = "Account Removed!"});
 
             return BadRequest(new {Message = "Unable to Remove Account!"});
         }
@@ -55,6 +52,11 @@ namespace vennAPI.Controllers
             if(user != null) return Ok(user);
 
             return BadRequest(new {message = "No User Found"});
+        }
+        [HttpGet("GetAllUsers")]
+        public async Task<ActionResult<IEnumerable<UserModel>>> GetAllUsers()
+        {
+            return await _userService.GetAllUsers();
         }
 
         [HttpPut("UpdateUsername/{id}/{newUsername}")]

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using vennAPI.Context;
 using vennAPI.Models;
@@ -21,10 +22,15 @@ namespace vennAPI.Services
             await _dataContext.Rooms.AddAsync(room);
             return await _dataContext.SaveChangesAsync() != 0;
         }
-        public async Task<List<RoomModel>> GetAllRoomsAsync() => await _dataContext.Rooms.ToListAsync();
+        public async Task<IEnumerable<RoomModel>> GetAllRoomsAsync() => await _dataContext.Rooms.ToListAsync();
         public async Task<RoomModel> GetRoomByRoomIdAsync(int roomId)
         {
-            return await _dataContext.Rooms.FindAsync(roomId);
+            return await _dataContext.Rooms.FirstOrDefaultAsync(r => r.RoomId == roomId);
+        }
+
+        public async Task<ActionResult<IEnumerable<RoomModel>>> GetAllRooms()
+        {
+            return await _dataContext.Rooms.AsNoTracking().ToListAsync();
         }
     }
 }

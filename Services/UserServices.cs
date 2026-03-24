@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using vennAPI.Context;
@@ -86,7 +87,7 @@ namespace vennAPI.Services
         // function to getUserInfoByUsernameAsync to verify user's credentials
         public async Task<UserModel> GetUserInfoByUsernameAsync(string username) => await _dataContext.Users.SingleOrDefaultAsync(user => user.Username == username);
 
-        public async Task<UserModel> GetUserInfoByUserIdAsync(int id) => await _dataContext.Users.SingleOrDefaultAsync(user => user.Id == id);
+        public async Task<UserModel> GetUserInfoByUserIdAsync(int id) => await _dataContext.Users.SingleOrDefaultAsync(user => user.UserId == id);
 
         //Create a helper function to Check if user exist or not!
         private async Task<bool> DoesUserExistEmail(string email) => await _dataContext.Users.SingleOrDefaultAsync(user => user.Email == email) != null;
@@ -112,14 +113,17 @@ namespace vennAPI.Services
             };
         }
 
-        public async Task<UserInfoDTO> GetUserInfoDTOByUsernameAsync(string username)
+        public async Task<UserModel> GetUserInfoDTOByUsernameAsync(string username)
         {
             var currentUser = await _dataContext.Users.SingleOrDefaultAsync(user => user.Username == username);
 
-            UserInfoDTO user = new();
-            user.Id = currentUser.Id;
-            user.Username = currentUser.Username;
-            return user;
+            // UserInfoDTO user = new();
+            // user.Id = currentUser.UserId;
+            // user.Username = currentUser.Username;
+            // user.Email = currentUser.Email;
+            // return user;
+            if(currentUser == null) return null;
+            return currentUser;
         }
 
 
@@ -144,6 +148,11 @@ namespace vennAPI.Services
             findUser.Username = newUsername;
             _dataContext.Users.Update(findUser);
             return await _dataContext.SaveChangesAsync() != 0;
+        }
+
+        public async Task<ActionResult<IEnumerable<UserModel>>> GetAllUsers()
+        {
+            return await _dataContext.Users.AsNoTracking().ToListAsync();
         }
     }
 }

@@ -11,14 +11,10 @@ namespace vennAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
-    public class RoomController : ControllerBase
+    // [Authorize]
+    public class RoomController(RoomServices roomServices) : ControllerBase
     {
-        private readonly RoomServices _roomService;
-        public RoomController(RoomServices roomServices)
-        {
-            _roomService = roomServices;   
-        }
+        private readonly RoomServices _roomService = roomServices;
 
         [HttpPost("CreateRoom")]
         public async Task<IActionResult> CreateRoom(RoomModel room)
@@ -42,6 +38,12 @@ namespace vennAPI.Controllers
             if (room != null) return Ok(new {room}); 
 
             return NotFound(new { message = "No room found!"});
+        }
+
+        [HttpGet("GetAllRooms")]
+        public async Task<ActionResult<IEnumerable<RoomModel>>> GetAllRooms()
+        {
+            return await _roomService.GetAllRooms();
         }
 
     }
