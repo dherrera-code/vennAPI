@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using vennAPI.Context;
@@ -31,6 +32,28 @@ namespace vennAPI.Services
         public async Task<ActionResult<IEnumerable<RoomModel>>> GetAllRooms()
         {
             return await _dataContext.Rooms.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<ActionResult<IEnumerable<RoomModel>>> GetRoomsByUserIdAsync(int userId)
+        {
+            var rooms = await _dataContext.Rooms.Where(room => room.UserId == userId).AsNoTracking().ToListAsync();
+            return rooms;
+        }
+
+        public async Task<ActionResult<RoomModel>> UpdateRoomAsync(int id, RoomModel updatedRoom)
+        {
+            var findRoom = await GetRoomByRoomIdAsync(id);
+
+            if(findRoom == null) return null;
+
+            findRoom.Title = updatedRoom.Title;
+            findRoom.Category = updatedRoom.Category;
+            findRoom.EventDate = updatedRoom.EventDate;
+            findRoom.IsRoomActive = updatedRoom.IsRoomActive;
+
+            _dataContext.Rooms.Update(findRoom);
+            await _dataContext.SaveChangesAsync();
+            return findRoom;
         }
     }
 }

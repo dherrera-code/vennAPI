@@ -58,6 +58,11 @@ namespace vennAPI.Controllers
         {
             return await _userService.GetAllUsers();
         }
+        [HttpGet("GetUserById/{userId}")]
+        public async Task<ActionResult<UserModel>> GetUser(int userId)
+        {
+            return await _userService.GetUserByUserIdAsync(userId);
+        }
 
         [HttpPut("UpdateUsername/{id}/{newUsername}")]
         public async Task<IActionResult> UpdateUsername(int id, string newUsername)

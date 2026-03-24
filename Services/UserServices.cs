@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -87,7 +88,7 @@ namespace vennAPI.Services
         // function to getUserInfoByUsernameAsync to verify user's credentials
         public async Task<UserModel> GetUserInfoByUsernameAsync(string username) => await _dataContext.Users.SingleOrDefaultAsync(user => user.Username == username);
 
-        public async Task<UserModel> GetUserInfoByUserIdAsync(int id) => await _dataContext.Users.SingleOrDefaultAsync(user => user.UserId == id);
+        private async Task<UserModel> GetUserInfoByUserIdAsync(int id) => await _dataContext.Users.SingleOrDefaultAsync(user => user.UserId == id);
 
         //Create a helper function to Check if user exist or not!
         private async Task<bool> DoesUserExistEmail(string email) => await _dataContext.Users.SingleOrDefaultAsync(user => user.Email == email) != null;
@@ -152,7 +153,15 @@ namespace vennAPI.Services
 
         public async Task<ActionResult<IEnumerable<UserModel>>> GetAllUsers()
         {
-            return await _dataContext.Users.AsNoTracking().ToListAsync();
+            return await _dataContext.Users.Include(user => user.RoomCreated).AsNoTracking().ToListAsync();
+        }
+
+        public async Task<ActionResult<UserModel>> GetUserByUserIdAsync(int id)
+        {
+            var user = await _dataContext.Users.Include(user => user.RoomCreated).FirstOrDefaultAsync(user => user.UserId == id);
+
+            // if(user == null) return NotFound();
+            return user;
         }
     }
 }

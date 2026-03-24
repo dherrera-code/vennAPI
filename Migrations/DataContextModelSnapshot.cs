@@ -45,12 +45,9 @@ namespace vennAPI.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserModelUserId")
-                        .HasColumnType("int");
-
                     b.HasKey("RoomId");
 
-                    b.HasIndex("UserModelUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Rooms");
                 });
@@ -83,9 +80,13 @@ namespace vennAPI.Migrations
 
             modelBuilder.Entity("vennAPI.Models.RoomModel", b =>
                 {
-                    b.HasOne("vennAPI.Models.UserModel", null)
+                    b.HasOne("vennAPI.Models.UserModel", "UserModel")
                         .WithMany("RoomCreated")
-                        .HasForeignKey("UserModelUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserModel");
                 });
 
             modelBuilder.Entity("vennAPI.Models.UserModel", b =>

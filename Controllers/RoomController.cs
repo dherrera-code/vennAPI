@@ -30,7 +30,7 @@ namespace vennAPI.Controllers
             return BadRequest(new {success});
         }
 
-        [HttpGet("GetRoomDetails/{roomId}")]
+        [HttpGet("GetRoomByRoomId/{roomId}")]
         public async Task<IActionResult> GetRoomById(int roomId)
         {
             var room = await _roomService.GetRoomByRoomIdAsync(roomId);
@@ -44,6 +44,18 @@ namespace vennAPI.Controllers
         public async Task<ActionResult<IEnumerable<RoomModel>>> GetAllRooms()
         {
             return await _roomService.GetAllRooms();
+        }
+
+        [HttpGet("GetCreatedRoomByUserId/{userId}")]
+        public async Task<ActionResult<IEnumerable<RoomModel>>> GetCreatedRoomsById(int userId)
+        {
+            return await _roomService.GetRoomsByUserIdAsync(userId);
+        }
+
+        [HttpPut("UpdateRoom/{id}")]
+        public async Task<ActionResult<RoomModel>> UpdateRoom(int id,[FromBody] RoomModel updatedRoom)
+        {
+            return await _roomService.UpdateRoomAsync(id, updatedRoom);
         }
 
     }

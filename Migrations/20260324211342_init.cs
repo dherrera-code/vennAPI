@@ -37,23 +37,23 @@ namespace vennAPI.Migrations
                     Category = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EventDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsRoomActive = table.Column<bool>(type: "bit", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    UserModelUserId = table.Column<int>(type: "int", nullable: true)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Rooms", x => x.RoomId);
                     table.ForeignKey(
-                        name: "FK_Rooms_Users_UserModelUserId",
-                        column: x => x.UserModelUserId,
+                        name: "FK_Rooms_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "UserId");
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rooms_UserModelUserId",
+                name: "IX_Rooms_UserId",
                 table: "Rooms",
-                column: "UserModelUserId");
+                column: "UserId");
         }
 
         /// <inheritdoc />

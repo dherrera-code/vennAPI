@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using vennAPI.Context;
 using vennAPI.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<RoomServices>();
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; // This explicitly ignores cycles!
+});
 
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
@@ -74,8 +80,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseCors("AllowAll");
-app.UseAuthorization();
 
+app.UseAuthorization();
 
 app.MapControllers();
 

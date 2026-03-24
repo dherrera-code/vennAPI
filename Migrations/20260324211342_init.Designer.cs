@@ -12,7 +12,7 @@ using vennAPI.Context;
 namespace vennAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20260324202223_init")]
+    [Migration("20260324211342_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -48,12 +48,9 @@ namespace vennAPI.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserModelUserId")
-                        .HasColumnType("int");
-
                     b.HasKey("RoomId");
 
-                    b.HasIndex("UserModelUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Rooms");
                 });
@@ -86,9 +83,13 @@ namespace vennAPI.Migrations
 
             modelBuilder.Entity("vennAPI.Models.RoomModel", b =>
                 {
-                    b.HasOne("vennAPI.Models.UserModel", null)
+                    b.HasOne("vennAPI.Models.UserModel", "UserModel")
                         .WithMany("RoomCreated")
-                        .HasForeignKey("UserModelUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserModel");
                 });
 
             modelBuilder.Entity("vennAPI.Models.UserModel", b =>
