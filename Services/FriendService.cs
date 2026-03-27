@@ -29,7 +29,9 @@ namespace vennAPI.Services
             Friend friendEntry = new();
             friendEntry.RequesterId = requesterId;
             friendEntry.ReceiverId = receiverId;
-            friendEntry.Status = 0;
+            friendEntry.Status = FriendshipStatus.Pending;
+            await _dataContext.Friends.AddAsync(friendEntry);
+            await _dataContext.SaveChangesAsync();
 
             return friendEntry;
         }
@@ -41,13 +43,15 @@ namespace vennAPI.Services
             return list;
         }
 
-        public ActionResult<Friend> GetAcceptedFriendAsync(int userId)
+        public async Task<List<Friend>> GetAcceptedFriendAsync(int userId)
         {
-            throw new NotImplementedException();
+            var friendList =  await _dataContext.Friends.Where(f => (f.RequesterId == userId || f.ReceiverId == userId) && f.Status == FriendshipStatus.Accepted).ToListAsync();
+            return friendList;
+    
         }
         // The receiver of the friend request must accept the friend request to change status.
         // This endpoint will handle the function!
-        public ActionResult<Friend> AddFriendStatus(int Id)
+        public ActionResult<Friend> UpdateFriendStatus(int Id)
         {
             // bool entry = await DoesFriendEntryExist(Id, OtherId);
             throw new NotImplementedException();
