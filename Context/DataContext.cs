@@ -14,9 +14,8 @@ namespace vennAPI.Context
         {
             
         }
-
         public DbSet<UserModel> Users {get; set;}
         public DbSet<RoomModel> Rooms {get; set;}
-        // public DbSet<> MyProperty { get; set; }
+        public DbSet<Friend> Friends { get; set; }
     }
 }

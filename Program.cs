@@ -15,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<RoomServices>();
+builder.Services.AddScoped<FriendService>();
 // builder.Services.AddSingleton<BlobServices>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>

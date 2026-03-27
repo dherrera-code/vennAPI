@@ -10,7 +10,7 @@ namespace vennAPI.Models
         public int Id { get; set; }
         public int RequesterId { get; set; }
         public int ReceiverId { get; set; }
-        public FriendshipStatus MyProperty { get; set; }
+        public FriendshipStatus Status { get; set; }
         public DateTime RequestedAt { get; set; } = DateTime.Now;
         public DateTime? AcceptedAt { get; set; }
     }
@@ -19,6 +19,6 @@ namespace vennAPI.Models
     {
         Pending, // 0
         Accepted, // 1
-        Deleted
+        Deleted // 2
     }
 }
