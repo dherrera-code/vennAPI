@@ -42,9 +42,16 @@ namespace vennAPI.Services
             return await _dataContext.SaveChangesAsync() != 0;
         }
 
+        private async Task<UserModel> GetUserByEmailAsync(string email)
+        {
+            return await _dataContext.Users.AsNoTracking().SingleOrDefaultAsync(user => user.Email == email);
+        }
+
         public async Task<string> Login(LoginDTO userLogin)
         {
             UserModel currentUser = await GetUserInfoByUsernameAsync(userLogin.Username);
+
+            if(currentUser == null) await GetUserByEmailAsync(userLogin.Username);
 
             if(currentUser == null) return null;
 
