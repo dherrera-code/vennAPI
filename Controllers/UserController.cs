@@ -74,6 +74,8 @@ namespace vennAPI.Controllers
             return BadRequest(new {Message = "Updating Username Failed! New Username may already be created!"});
         }
 
+        // In the future, I may move both profile endpoints to another controller! For Authentication purposes!
+
         [HttpGet("GetProfileByUserId/{id}")]
         public async Task<ActionResult<ProfileDTO>> GetUserProfileByUserId(int id)
         {
