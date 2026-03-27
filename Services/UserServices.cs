@@ -170,5 +170,20 @@ namespace vennAPI.Services
             // if(user == null) return NotFound();
             return user;
         }
+
+        public async Task<ActionResult<ProfileDTO>> GetUserProfileByIdAsync(int id)
+        {
+            var user = await GetUserByUserIdAsync(id);
+            
+            if(user.Value == null) throw new Exception();
+            ProfileDTO userProfile = new();
+            userProfile.Username = user.Value.Username;
+            userProfile.Email = user.Value.Email;
+            userProfile.Description = user.Value.Description;
+            userProfile.UserIcon = user.Value.UserIcon;
+            userProfile.Banner = user.Value.Banner;
+
+            return userProfile;
+        }
     }
 }

@@ -73,6 +73,14 @@ namespace vennAPI.Controllers
 
             return BadRequest(new {Message = "Updating Username Failed! New Username may already be created!"});
         }
+
+        [HttpGet("GetUserProfileById/{id}")]
+        public async Task<ActionResult<ProfileDTO>> GetUserProfileByUserId(int id)
+        {
+            return await _userService.GetUserProfileByIdAsync(id);
+        }
+
+        
         
     }
 }
