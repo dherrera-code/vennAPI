@@ -3,6 +3,11 @@
 ### Link to hosted API
 https://venngroupapi-emashqggf5gphwax.westus3-01.azurewebsites.net/
 
+### Link to hosted Site
+
+https://venn-iota.vercel.app/
+
+
 The Following endpoints have been implemented:
 
 UserController:
