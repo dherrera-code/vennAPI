@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using vennAPI.Models;
 using vennAPI.Models.DTO;
@@ -8,7 +9,7 @@ namespace vennAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    // [Authorize]
+    [Authorize]
     public class RoomController(RoomServices roomServices) : ControllerBase
     {
         private readonly RoomServices _roomService = roomServices;
