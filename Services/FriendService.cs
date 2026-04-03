@@ -38,7 +38,7 @@ namespace vennAPI.Services
             return friendEntry;
         }
 
-        public async Task<ActionResult<object>> GetPendingFriendAsync(int userId)
+        public async Task<ActionResult<List<Friend>>> GetPendingFriendAsync(int userId)
         {
             // var list = await _dataContext.Friends.Where(entries => entries.ReceiverId == userId && entries.Status == 0).Select(entries => new
             // {
