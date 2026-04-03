@@ -17,5 +17,8 @@ namespace vennAPI.Models
         // public Boolean IsAdmin { get; set; } 
         public bool IsAccepted { get; set; } // If False, invite is sent BUT member hasn't accepted invitation else; user accepted room invitation!
         public bool IsDeleted { get; set; } = false;
+
+        public RoomModel Room {get; set; }// what does this do?
+        public UserModel MemberInfo {get; set;} //Get info of user, Add data for availability
     }
 }

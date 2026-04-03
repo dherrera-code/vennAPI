@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -27,8 +28,10 @@ namespace vennAPI.Services
         public async Task<IEnumerable<RoomModel>> GetAllRoomsAsync() => await _dataContext.Rooms.ToListAsync();
         public async Task<RoomModel> GetRoomByRoomIdAsync(int roomId)
         {
-            return await _dataContext.Rooms.FirstOrDefaultAsync(r => r.RoomId == roomId);
-        }
+            var mainRoom = await _dataContext.Rooms.FindAsync(roomId);
+
+            return mainRoom;
+        }   
 
         public async Task<ActionResult<IEnumerable<RoomModel>>> GetAllRooms()
         {
@@ -59,30 +62,45 @@ namespace vennAPI.Services
 
               // Methods for room members!
 
-        public async Task<ActionResult<RoomMemberDTO>> InviteMemberToRoom(RoomMemberDTO newRoomMember)
+        public async Task<bool> InviteMemberToRoom(RoomMemberDTO newRoomMember)
         {
             // Need to check if instance already Exist!!!
-            var result = DoesInviteInstanceExist(newRoomMember.RoomModelId, newRoomMember.MemberId);
-            if(result == null) return null;
-            
-            RoomMember invitedMember = new();
-            invitedMember.RoomModelId = newRoomMember.RoomModelId;
-            invitedMember.IsAccepted = false;
-            invitedMember.UserModelId = newRoomMember.MemberId;
-            
+            var invite = await DoesInviteInstanceExist(newRoomMember.RoomModelId, newRoomMember.MemberId);
+
+            if(invite != null) return false;
+
+            RoomMember invitedMember = new()
+            {
+                RoomModelId = newRoomMember.RoomModelId,
+                IsAccepted = false,
+                UserModelId = newRoomMember.MemberId,
+                IsDeleted = false
+            };
+
             await _dataContext.RoomMembers.AddAsync(invitedMember);
-            await _dataContext.SaveChangesAsync();
-            return newRoomMember;
+            return await _dataContext.SaveChangesAsync() != 0;
+            
         }
 
         private async Task<RoomMember> DoesInviteInstanceExist(int roomModelId, int memberId)
         {
-            return await _dataContext.RoomMembers.SingleOrDefaultAsync(invite => invite.RoomModelId == roomModelId && invite.UserModelId == memberId);
+            return await _dataContext.RoomMembers.SingleOrDefaultAsync(invite => invite.RoomModelId == roomModelId && invite.UserModelId == memberId && !invite.IsDeleted);
         }
 
-        public async Task<ActionResult<IEnumerable<RoomMember>>> GetAllJoinedMembersByRoom(int roomId)
+        public async Task<ActionResult<IEnumerable<Object>>> GetAllJoinedMembersByRoom(int roomId)
         {
-            return await _dataContext.RoomMembers.Where(item => item.RoomModelId == roomId && !item.IsDeleted).ToListAsync();
+            // return await _dataContext.RoomMembers.Where(item => item.RoomModelId == roomId && item.IsAccepted && !item.IsDeleted).Include(item => item.MemberInfo).ToListAsync();
+            return await _dataContext.RoomMembers.Where(item => item.RoomModelId == roomId && item.IsAccepted && !item.IsDeleted).Select(item => new
+            {
+                item.RoomModelId,
+                item.UserModelId,
+                item.IsAccepted,
+                item.MemberInfo.UserId,
+                item.MemberInfo.Username,
+                item.MemberInfo.UserIcon,
+                // add more data here for availability!
+
+            }).ToListAsync();
             
         }
 
@@ -100,7 +118,6 @@ namespace vennAPI.Services
         private async Task<RoomMember> DoesRoomMemberInstanceExist(RoomMemberDTO roomMember)
         {
             return await _dataContext.RoomMembers.SingleOrDefaultAsync(member => member.RoomModelId == roomMember.RoomModelId && member.UserModelId == roomMember.MemberId);
-
         }
 
         public async Task<bool> RemoveMemberFromRoom(RoomMemberDTO memberToRemove)
@@ -113,7 +130,11 @@ namespace vennAPI.Services
             return await _dataContext.SaveChangesAsync() != 0;
         }
 
-  
+        public async Task<List<RoomMember>> GetPendingInvitesByUserId(int userId)
+        {
+            var invitationList = await _dataContext.RoomMembers.Where(item => item.UserModelId == userId && !item.IsAccepted && !item.IsDeleted).Include(item => item.Room).ToListAsync();
 
+            return invitationList;
+        }
     }
 }

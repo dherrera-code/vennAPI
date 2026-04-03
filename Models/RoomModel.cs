@@ -20,7 +20,7 @@ namespace vennAPI.Models
         public UserModel? UserModel {get; set;}
         public int UserId { get; set; } // Foreign key of the room creator!
         // Navigation property for our RoomMembers
-        public ICollection<RoomMember> Members {get; set;} = [];
-        
+
+        public ICollection<RoomMember>? Members {get; set;} = [];
     }
 }
