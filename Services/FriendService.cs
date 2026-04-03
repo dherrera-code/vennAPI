@@ -26,20 +26,35 @@ namespace vennAPI.Services
             {
                 return null;
             }
-            Friend friendEntry = new();
-            friendEntry.RequesterId = requesterId;
-            friendEntry.ReceiverId = receiverId;
-            friendEntry.Status = FriendshipStatus.Pending;
+            Friend friendEntry = new()
+            {
+                RequesterId = requesterId,
+                ReceiverId = receiverId,
+                Status = FriendshipStatus.Pending
+            };
             await _dataContext.Friends.AddAsync(friendEntry);
             await _dataContext.SaveChangesAsync();
 
             return friendEntry;
         }
 
-        public async Task<ActionResult<List<Friend>>> GetPendingFriendAsync(int userId)
+        public async Task<ActionResult<object>> GetPendingFriendAsync(int userId)
         {
-
-            var list = await _dataContext.Friends.Where(entries => entries.ReceiverId == userId && entries.Status == 0).ToListAsync();
+            // var list = await _dataContext.Friends.Where(entries => entries.ReceiverId == userId && entries.Status == 0).Select(entries => new
+            // {
+            //     entries.RequesterId,
+            //     entries.ReceiverId,
+            //     entries.Status,
+            //     entries.RequestedAt,
+            //     entries.AcceptedAt,
+            //     // entries.RequesterData.UserId,
+            //     // entries.RequesterData.Username,
+            //     // entries.RequesterData.UserIcon,
+            // })
+            // .ToListAsync();
+            var list = await _dataContext.Friends.Where(entries => entries.ReceiverId == userId && entries.Status == 0)
+            .ToListAsync();
+            
             return list;
         }
 
@@ -80,8 +95,6 @@ namespace vennAPI.Services
                 }
             }
             return true;
-
-            // return await _dataContext.Friends.Where(friendEntry => friendEntry.RequesterId == userId).ToListAsync();
         }
     }
 }
