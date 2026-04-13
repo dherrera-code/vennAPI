@@ -1,17 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using vennAPI.Models;
+using vennAPI.Models.DTO;
 using vennAPI.Services;
 
 namespace vennAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    // [Authorize]
+    [Authorize]
     public class RoomController(RoomServices roomServices) : ControllerBase
     {
         private readonly RoomServices _roomService = roomServices;

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using vennAPI.Context;
 
@@ -11,9 +12,11 @@ using vennAPI.Context;
 namespace vennAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20260402222918_AddRoomMembersTable")]
+    partial class AddRoomMembersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,14 +70,12 @@ namespace vennAPI.Migrations
                     b.Property<int>("RoomModelId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserModelId")
+                    b.Property<int>("UserModelId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoomModelId");
-
-                    b.HasIndex("UserModelId");
 
                     b.ToTable("RoomMembers");
                 });
@@ -107,33 +108,6 @@ namespace vennAPI.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Rooms");
-                });
-
-            modelBuilder.Entity("vennAPI.Models.UserAvailability", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Day")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Hour")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserAvailability");
                 });
 
             modelBuilder.Entity("vennAPI.Models.UserModel", b =>
@@ -174,19 +148,11 @@ namespace vennAPI.Migrations
 
             modelBuilder.Entity("vennAPI.Models.RoomMember", b =>
                 {
-                    b.HasOne("vennAPI.Models.RoomModel", "Room")
+                    b.HasOne("vennAPI.Models.RoomModel", null)
                         .WithMany("Members")
                         .HasForeignKey("RoomModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("vennAPI.Models.UserModel", "MemberInfo")
-                        .WithMany()
-                        .HasForeignKey("UserModelId");
-
-                    b.Navigation("MemberInfo");
-
-                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("vennAPI.Models.RoomModel", b =>
@@ -200,17 +166,6 @@ namespace vennAPI.Migrations
                     b.Navigation("UserModel");
                 });
 
-            modelBuilder.Entity("vennAPI.Models.UserAvailability", b =>
-                {
-                    b.HasOne("vennAPI.Models.UserModel", "User")
-                        .WithMany("Availability")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("vennAPI.Models.RoomModel", b =>
                 {
                     b.Navigation("Members");
@@ -218,8 +173,6 @@ namespace vennAPI.Migrations
 
             modelBuilder.Entity("vennAPI.Models.UserModel", b =>
                 {
-                    b.Navigation("Availability");
-
                     b.Navigation("RoomCreated");
                 });
 #pragma warning restore 612, 618

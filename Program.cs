@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using vennAPI.Context;
 using vennAPI.Services;
 using System.Text.Json.Serialization;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,33 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Enter your JWT token. Example: eyJhbGciOi...",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        // Type = SecuritySchemeType.Http,
+        // BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {{
+        new OpenApiSecurityScheme
+        {
+            Reference = new OpenApiReference
+            {
+                Type = ReferenceType.SecurityScheme,
+                Id = "Bearer"
+            }
+        },
+        Array.Empty<string>()
+    }});
+});
+
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<RoomServices>();
 builder.Services.AddScoped<FriendService>();
