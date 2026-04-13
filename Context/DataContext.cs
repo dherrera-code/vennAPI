@@ -34,6 +34,10 @@ namespace vennAPI.Context
             .WithMany()
             .HasForeignKey(f => f.ReceiverId)
             .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UserAvailability>()
+            .HasIndex(x => new {x.UserId, x.Day, x.Hour })
+            .IsUnique();
         }
         
         
