@@ -21,10 +21,25 @@ namespace vennAPI.Context
 
         // configure our entities or queries how we specify it
         //This is used to override default conventions / configure relationships manually
-        // protected override void OnModelCreating(ModelBuilder modelBuilder)
-        // {
-        //     base.OnModelCreating(modelBuilder);
-        // }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Friend>()
+            .HasOne(f => f.Requester)
+            .WithMany()
+            .HasForeignKey(f => f.RequesterId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Friend>()
+            .HasOne(f => f.Receiver)
+            .WithMany()
+            .HasForeignKey(f => f.ReceiverId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UserAvailability>()
+            .HasIndex(x => new {x.UserId, x.Day, x.Hour })
+            .IsUnique();
+        }
+        
         
     }
 }

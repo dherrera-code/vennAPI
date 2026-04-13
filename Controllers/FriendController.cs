@@ -32,10 +32,14 @@ namespace vennAPI.Controllers
         {
             return await _friendService.GetAcceptedFriendAsync(userId);
         }
-        [HttpPut("AddFriendStatusByColumnId/{id}")]
-        public async Task<ActionResult<Friend>> UpdateFriendStatusToAccepted(int id)
+        [HttpPut("AddFriendStatusByColumnId/{requesterId}/{receiverId}")]
+        public async Task<ActionResult<Friend>> UpdateFriendStatusToAccepted(int requesterId, int receiverId)
         {
-            return await _friendService.UpdateFriendStatusToAccepted(id);
+            var result = await _friendService.UpdateFriendStatusToAccepted(requesterId, receiverId);
+            
+            if(result == null) return NotFound();
+
+            return result;
         }
     }
 }

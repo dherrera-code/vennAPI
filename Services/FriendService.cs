@@ -40,36 +40,48 @@ namespace vennAPI.Services
 
         public async Task<ActionResult<List<Friend>>> GetPendingFriendAsync(int userId)
         {
-            // var list = await _dataContext.Friends.Where(entries => entries.ReceiverId == userId && entries.Status == 0).Select(entries => new
-            // {
-            //     entries.RequesterId,
-            //     entries.ReceiverId,
-            //     entries.Status,
-            //     entries.RequestedAt,
-            //     entries.AcceptedAt,
-            //     // entries.RequesterData.UserId,
-            //     // entries.RequesterData.Username,
-            //     // entries.RequesterData.UserIcon,
-            // })
-            // .ToListAsync();
             var list = await _dataContext.Friends.Where(entries => entries.ReceiverId == userId && entries.Status == 0)
+            .Include(requesterInfo => requesterInfo.Requester)
             .ToListAsync();
+
+            // var listDTO = list.Select(info => new FriendInfoDTO
+            // {
+            //     RequesterId = info.RequesterId,
+            //     ReceiverId = info.ReceiverId,
+            //     Status = info.Status,
+            //     RequestedAt = info.RequestedAt,
+            //     AcceptedAt = info.AcceptedAt,
+                
+            //     Requester = info.Requester.Select(requester => new UserInfoDTO
+            //     {
+            //         Id = requester.Id,
+            //         Username = requester.Username,
+            //         Email = requester.Email,
+            //         UserIcon = requester.UserIcon
+
+            //     }).ToList()
+            // }).ToList();
             
             return list;
         }
 
         public async Task<List<Friend>> GetAcceptedFriendAsync(int userId)
         {
-            var friendList =  await _dataContext.Friends.Where(f => (f.RequesterId == userId || f.ReceiverId == userId) && f.Status == FriendshipStatus.Accepted).ToListAsync();
+            var friendList =  await _dataContext.Friends.Where(f => (f.RequesterId == userId || f.ReceiverId == userId) && f.Status == FriendshipStatus.Accepted).Include(friendInfo => friendInfo.Requester).Include(receiverInfo => receiverInfo.Receiver)
+            .ToListAsync();
+
+            // var friendListDTOs = friendList.Select()
+
+
             return friendList;
     
         }
         // The receiver of the friend request must accept the friend request to change status.
         // This endpoint will handle the function!
-        public async Task<ActionResult<Friend>> UpdateFriendStatusToAccepted(int id)
+        public async Task<ActionResult<Friend>> UpdateFriendStatusToAccepted(int requesterId, int receiverId)
         {
             // bool entry = await DoesFriendEntryExist(Id, OtherId);
-            var entry = await GetFriendEntryById(id);
+            var entry = await GetFriendEntryById(requesterId, receiverId);
             if(entry == null) return null;
 
             entry.Status = FriendshipStatus.Accepted;
@@ -79,9 +91,9 @@ namespace vennAPI.Services
         }
 
         // * Helper Functions
-        private async Task<Friend> GetFriendEntryById(int id)
+        private async Task<Friend> GetFriendEntryById(int requesterId, int receiverId)
         {
-            return await _dataContext.Friends.SingleOrDefaultAsync(entry => entry.Id == id);
+            return await _dataContext.Friends.SingleOrDefaultAsync(entry => entry.RequesterId == requesterId && entry.ReceiverId == receiverId && (entry.Status == 0));
         }
         private async Task<bool> DoesFriendEntryExist(int userId, int receiverId)
         {

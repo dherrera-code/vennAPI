@@ -6,6 +6,7 @@ using vennAPI.Context;
 using vennAPI.Services;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
+using vennAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,8 @@ builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<RoomServices>();
 builder.Services.AddScoped<FriendService>();
 builder.Services.AddSingleton<BlobServices>();
+builder.Services.AddScoped<AvailabilityServices>();
+
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

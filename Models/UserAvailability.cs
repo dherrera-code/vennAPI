@@ -21,6 +21,5 @@ namespace vennAPI.Models
         No = 0,
         Maybe = 1,
         Yes
-
     }
 }
