@@ -28,14 +28,17 @@ namespace vennAPI.Services
         public async Task<IEnumerable<RoomModel>> GetAllRoomsAsync() => await _dataContext.Rooms.ToListAsync();
         public async Task<RoomModel> GetRoomByRoomIdAsync(int roomId)
         {
-            var mainRoom = await _dataContext.Rooms.FindAsync(roomId);
+            var mainRoom = await _dataContext.Rooms.Include(mem => mem.Members)
+            .FirstOrDefaultAsync(room => roomId == room.RoomId);
 
             return mainRoom;
         }   
 
         public async Task<ActionResult<IEnumerable<RoomModel>>> GetAllRooms()
         {
-            return await _dataContext.Rooms.AsNoTracking().ToListAsync();
+            return await _dataContext.Rooms.AsNoTracking()
+            .Include(member => member.Members)
+            .ToListAsync();
         }
 
         public async Task<ActionResult<IEnumerable<RoomModel>>> GetRoomsByUserIdAsync(int userId)

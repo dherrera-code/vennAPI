@@ -17,5 +17,7 @@ namespace vennAPI.Models
         // ! End of profile columns
         public ICollection<RoomModel> RoomCreated {get; set;} = [];
 
+        public ICollection<UserAvailability> Availability {get; set;} = [];
+
     }
 }
