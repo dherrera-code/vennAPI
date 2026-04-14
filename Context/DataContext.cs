@@ -18,6 +18,7 @@ namespace vennAPI.Context
         public DbSet<RoomModel> Rooms { get; set; }
         public DbSet<Friend> Friends { get; set; }
         public DbSet<RoomMember> RoomMembers { get; set; }
+        public DbSet<UserAvailability> UserAvailability { get; set; }
 
         // configure our entities or queries how we specify it
         //This is used to override default conventions / configure relationships manually
