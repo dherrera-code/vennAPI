@@ -18,8 +18,10 @@ Create a backend for our Venn FullStack application!
 - All Users can create an account, login, remove account, update account (username and password)!
 - Users can create a room, and invite friends to join the room!
 
-## Controllers Needed!:
+## Next Goals:
 
+Add Navigation Props to Users to include user's availability!
+Add prop to User to save account creation!
 
 ### UserController
 
@@ -85,9 +87,3 @@ DTO models
     string Salt;
     string Hash;
 ```
-
-<!-- ### UserIdDTO
-```csharp
-    int UserId;
-    List<int> RoomListIds;
-``` -->
