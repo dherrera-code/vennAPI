@@ -43,7 +43,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<RoomServices>();
 builder.Services.AddScoped<FriendService>();
-// builder.Services.AddSingleton<BlobServices>();
+builder.Services.AddSingleton<BlobServices>();
 builder.Services.AddScoped<AvailabilityServices>();
 
 
