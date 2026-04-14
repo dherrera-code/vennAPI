@@ -7,11 +7,10 @@ https://venngroupapi-emashqggf5gphwax.westus3-01.azurewebsites.net/
 
 https://venn-iota.vercel.app/
 
+### Notion Link: 
+https://www.notion.so/Full-stack-Planning-Notion-3144bc6a2923802c8509c72e5572b5c5?source=copy_link
 
-The Following endpoints have been implemented:
 
-UserController:
-    - Login, CreateUser
 ## Project Goal
 
 Create a backend for our Venn FullStack application!
@@ -19,7 +18,6 @@ Create a backend for our Venn FullStack application!
 - Users can create a room, and invite friends to join the room!
 
 ## Controllers Needed!:
-
 
 ### UserController
 
@@ -66,8 +64,6 @@ DTO models
 
 ```
 
-## Models Saved into our DB
-
 ### LoginModelDTO
 ```csharp
     string Username
@@ -85,9 +81,3 @@ DTO models
     string Salt;
     string Hash;
 ```
-
-<!-- ### UserIdDTO
-```csharp
-    int UserId;
-    List<int> RoomListIds;
-``` -->

@@ -6,7 +6,6 @@ using vennAPI.Context;
 using vennAPI.Services;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
-using vennAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
