@@ -37,6 +37,7 @@ namespace vennAPI.Services
             createUser.Email = newUser.Email;
             createUser.Hash = EncryptedPassword.Hash;
             createUser.Salt = EncryptedPassword.Salt;
+            createUser.AccountCreated = DateTime.UtcNow;
 
             await _dataContext.Users.AddAsync(createUser);
             return await _dataContext.SaveChangesAsync() != 0;
@@ -125,11 +126,6 @@ namespace vennAPI.Services
         {
             var currentUser = await _dataContext.Users.SingleOrDefaultAsync(user => user.Username == username);
 
-            // UserInfoDTO user = new();
-            // user.Id = currentUser.UserId;
-            // user.Username = currentUser.Username;
-            // user.Email = currentUser.Email;
-            // return user;
             if (currentUser == null) return null;
             return currentUser;
         }
@@ -184,6 +180,7 @@ namespace vennAPI.Services
             userProfile.Description = user.Value.Description;
             userProfile.UserIcon = user.Value.UserIcon;
             userProfile.Banner = user.Value.Banner;
+            userProfile.AccountCreated = user.Value.AccountCreated;
 
             return userProfile;
         }
@@ -214,6 +211,7 @@ namespace vennAPI.Services
             user.Value.Description = profileInfo.Description;
             user.Value.UserIcon = profileInfo.UserIcon;
             user.Value.Banner = profileInfo.Banner;
+
             _dataContext.Update(user.Value);
             await _dataContext.SaveChangesAsync();
             //update user then save changes!

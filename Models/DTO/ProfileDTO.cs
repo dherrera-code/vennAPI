@@ -12,5 +12,7 @@ namespace vennAPI.Models.DTO
         public string? Description { get; set; }
         public string? UserIcon { get; set; }
         public string? Banner { get; set; }
+        public DateTime AccountCreated { get; set; }
+        
     }
 }
