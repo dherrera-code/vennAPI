@@ -121,18 +121,18 @@ namespace vennAPI.Services
             };
         }
 
-        // public async Task<UserModel> GetUserInfoDTOByUsernameAsync(string username)
-        // {
-        //     var currentUser = await _dataContext.Users.SingleOrDefaultAsync(user => user.Username == username);
+        public async Task<UserModel> GetUserInfoDTOByUsernameAsync(string username)
+        {
+            var currentUser = await _dataContext.Users.SingleOrDefaultAsync(user => user.Username == username);
 
-        //     // UserInfoDTO user = new();
-        //     // user.Id = currentUser.UserId;
-        //     // user.Username = currentUser.Username;
-        //     // user.Email = currentUser.Email;
-        //     // return user;
-        //     if (currentUser == null) return null;
-        //     return currentUser;
-        // }
+            // UserInfoDTO user = new();
+            // user.Id = currentUser.UserId;
+            // user.Username = currentUser.Username;
+            // user.Email = currentUser.Email;
+            // return user;
+            if (currentUser == null) return null;
+            return currentUser;
+        }
 
 
         public async Task<bool> DeleteUser(string userToRemove)

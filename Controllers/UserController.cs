@@ -44,15 +44,15 @@ namespace vennAPI.Controllers
             return BadRequest(new {Message = "Unable to Remove Account!"});
         }
 
-        // [HttpGet("GetUserByUsername/{username}")]
-        // public async Task<IActionResult> GetUserByUsername(string username)
-        // {
-        //     var user = await _userService.GetUserInfoDTOByUsernameAsync(username);
+        [HttpGet("GetUserByUsername/{username}")]
+        public async Task<IActionResult> GetUserByUsername(string username)
+        {
+            var user = await _userService.GetUserInfoDTOByUsernameAsync(username);
             
-        //     if(user != null) return Ok(user);
+            if(user != null) return Ok(user);
 
-        //     return BadRequest(new {message = "No User Found"});
-        // }
+            return BadRequest(new {message = "No User Found"});
+        }
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<UserModel>>> GetAllUsers()
         {
