@@ -7,11 +7,10 @@ https://venngroupapi-emashqggf5gphwax.westus3-01.azurewebsites.net/
 
 https://venn-iota.vercel.app/
 
+### Notion Link: 
+https://www.notion.so/Full-stack-Planning-Notion-3144bc6a2923802c8509c72e5572b5c5?source=copy_link
 
-The Following endpoints have been implemented:
 
-UserController:
-    - Login, CreateUser
 ## Project Goal
 
 Create a backend for our Venn FullStack application!
@@ -67,8 +66,6 @@ DTO models
     bool isActive;
 
 ```
-
-## Models Saved into our DB
 
 ### LoginModelDTO
 ```csharp

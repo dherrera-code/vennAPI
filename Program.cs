@@ -6,7 +6,6 @@ using vennAPI.Context;
 using vennAPI.Services;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
-using vennAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,8 +43,9 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<RoomServices>();
 builder.Services.AddScoped<FriendService>();
+builder.Services.AddSingleton<BlobServices>();
 builder.Services.AddScoped<AvailabilityServices>();
-// builder.Services.AddSingleton<BlobServices>();
+
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -107,9 +107,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-
 app.UseCors("AllowAll");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
