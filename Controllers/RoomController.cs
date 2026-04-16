@@ -21,6 +21,10 @@ namespace vennAPI.Controllers
             {
                 return BadRequest("Room data is required.");
             }
+            if(string.IsNullOrWhiteSpace(room.Title) || string.IsNullOrWhiteSpace(room.Category))
+            {
+                return BadRequest("Title and Category is required!");
+            }
             var success = await _roomService.AddNewRoomAsync(room);
 
             if (success) return Ok(new {success});
