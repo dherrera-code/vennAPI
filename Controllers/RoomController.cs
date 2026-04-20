@@ -29,7 +29,7 @@ namespace vennAPI.Controllers
 
             if (success) return Ok(new {success});
 
-            return BadRequest(new {success});
+            return BadRequest($"Room Data is invalid or user id: {room.UserId} may not exist!");
         }
 
         [HttpGet("GetRoomByRoomId/{roomId}")]
@@ -53,11 +53,26 @@ namespace vennAPI.Controllers
         {
             return await _roomService.GetRoomsByUserIdAsync(userId);
         }
+        [HttpGet("GetCreatedAndJoinedRoomsByUserId/{id}")]
+        public async Task<ActionResult<IEnumerable<RoomModel>>> GetRelevantRoomsByUserIdAsync(int id)
+        {
+            var roomsList = await _roomService.GetRelevantRoomsByUserIdAsync(id);
+            return roomsList;
+        }
 
         [HttpPut("UpdateRoom/{id}")]
         public async Task<ActionResult<RoomModel>> UpdateRoom(int id,[FromBody] RoomModel updatedRoom)
         {
             return await _roomService.UpdateRoomAsync(id, updatedRoom);
+        }
+        [HttpPut("DeleteRoomById/{id}")]
+        public async Task<ActionResult<bool>> RemoveRoom(int id)
+        {
+            var result =  await _roomService.RemoveRoomByIdAsync(id);
+            if(!result) return NotFound($"Room By id: {id} doesn't exist");
+
+            return Ok(true);
+
         }
 
     }
