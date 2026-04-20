@@ -42,7 +42,8 @@ namespace vennAPI.Services
 
         public async Task<ActionResult<IEnumerable<RoomModel>>> GetRoomsByUserIdAsync(int userId)
         {
-            var rooms = await _dataContext.Rooms.Where(room => room.UserId == userId).AsNoTracking().ToListAsync();
+            var rooms = await _dataContext.Rooms.Where(room => room.UserId == userId).Include(members => members.Members)
+            .AsNoTracking().ToListAsync();
             return rooms;
         }
 
@@ -140,6 +141,16 @@ namespace vennAPI.Services
             var invitationList = await _dataContext.RoomMembers.Where(item => item.UserModelId == userId && !item.IsAccepted && !item.IsDeleted).Include(item => item.Room).ToListAsync();
 
             return invitationList;
+        }
+
+        public async Task<bool> RemoveRoomByIdAsync(int id)
+        {
+            var room = await _dataContext.Rooms.FindAsync(id);
+            if(room is null) return false;
+
+            room.IsDeleted = true; 
+            _dataContext.Update(room);
+            return await _dataContext.SaveChangesAsync() != 0;
         }
     }
 }

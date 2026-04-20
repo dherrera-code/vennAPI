@@ -59,6 +59,15 @@ namespace vennAPI.Controllers
         {
             return await _roomService.UpdateRoomAsync(id, updatedRoom);
         }
+        [HttpPut("DeleteRoomById/{id}")]
+        public async Task<ActionResult<bool>> RemoveRoom(int id)
+        {
+            var result =  await _roomService.RemoveRoomByIdAsync(id);
+            if(!result) return NotFound($"Room By id: {id} doesn't exist");
+
+            return Ok(true);
+
+        }
 
     }
 }

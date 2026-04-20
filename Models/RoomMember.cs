@@ -8,7 +8,6 @@ namespace vennAPI.Models
 {
     public class RoomMember
     {
-        //Not in Database Yet
         public int Id { get; set; }
         public int RoomModelId { get; set; } // Foreign Key
         public int? UserModelId { get; set; } // Foreign Key
