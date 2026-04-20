@@ -53,6 +53,12 @@ namespace vennAPI.Controllers
         {
             return await _roomService.GetRoomsByUserIdAsync(userId);
         }
+        [HttpGet("GetCreatedAndJoinedRoomsByUserId/{id}")]
+        public async Task<ActionResult<IEnumerable<RoomModel>>> GetRelevantRoomsByUserIdAsync(int id)
+        {
+            var roomsList = await _roomService.GetRelevantRoomsByUserIdAsync(id);
+            return roomsList;
+        }
 
         [HttpPut("UpdateRoom/{id}")]
         public async Task<ActionResult<RoomModel>> UpdateRoom(int id,[FromBody] RoomModel updatedRoom)

@@ -28,14 +28,15 @@ namespace vennAPI.Services
         public async Task<IEnumerable<RoomModel>> GetAllRoomsAsync() => await _dataContext.Rooms.ToListAsync();
         public async Task<RoomModel> GetRoomByRoomIdAsync(int roomId)
         {
-            var mainRoom = await _dataContext.Rooms.Include(mem => mem.Members).FirstOrDefaultAsync(room => roomId == room.RoomId);
+            var mainRoom = await _dataContext.Rooms.Include(mem => mem.Members).FirstOrDefaultAsync(room => roomId == room.RoomId && !room.IsDeleted);
 
             return mainRoom;
         }
 
         public async Task<ActionResult<IEnumerable<RoomModel>>> GetAllRooms()
         {
-            return await _dataContext.Rooms.AsNoTracking()
+            return await _dataContext.Rooms.Where(room => !room.IsDeleted)
+            .AsNoTracking()
             .Include(member => member.Members)
             .ToListAsync();
         }
@@ -151,6 +152,14 @@ namespace vennAPI.Services
             room.IsDeleted = true; 
             _dataContext.Update(room);
             return await _dataContext.SaveChangesAsync() != 0;
+        }
+
+        public async Task<ActionResult<IEnumerable<RoomModel>>> GetRelevantRoomsByUserIdAsync(int id)
+        {
+            var roomsList = await _dataContext.Rooms.Where(room => room.UserId == id && !room.IsDeleted && room.IsRoomActive || room.Members.Any(m => m.UserModelId == id && m.IsAccepted && !m.IsDeleted) ).Include(joined => joined.Members)
+            .ToListAsync();
+
+            return roomsList;
         }
     }
 }
