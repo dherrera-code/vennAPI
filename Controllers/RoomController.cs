@@ -29,7 +29,7 @@ namespace vennAPI.Controllers
 
             if (success) return Ok(new {success});
 
-            return BadRequest(new {success});
+            return BadRequest($"Room Data is invalid or user id: {room.UserId} may not exist!");
         }
 
         [HttpGet("GetRoomByRoomId/{roomId}")]

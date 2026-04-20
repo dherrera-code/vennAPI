@@ -22,8 +22,20 @@ namespace vennAPI.Services
 
         public async Task<bool> AddNewRoomAsync(RoomModel room)
         {
+            bool user = await DoesUserIdExistAsync(room.UserId);
+            if(!user) return false;
+
+            room.IsDeleted = false;
+            
             await _dataContext.Rooms.AddAsync(room);
             return await _dataContext.SaveChangesAsync() != 0;
+        }
+
+        private async Task<bool> DoesUserIdExistAsync(int id)
+        {
+            var user =  await _dataContext.Users.FindAsync(id);
+            if(user is null) return false;
+            return true;
         }
         public async Task<IEnumerable<RoomModel>> GetAllRoomsAsync() => await _dataContext.Rooms.ToListAsync();
         public async Task<RoomModel> GetRoomByRoomIdAsync(int roomId)
