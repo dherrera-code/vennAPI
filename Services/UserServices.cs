@@ -196,14 +196,16 @@ namespace vennAPI.Services
             {
                 if (profileInfo.Username != user.Value.Username)
                 { // checks if username
-                    throw new InvalidDataException();
+                    throw new InvalidDataException("Username already exist!");
+
                 }
             }
+
             if (await DoesUserExistEmail(profileInfo.Email))
             {
                 if (profileInfo.Email != user.Value.Email)
                 { // checks if username
-                    throw new InvalidDataException();
+                    throw new InvalidDataException("This new email is already in use!");
                 }
             }
             user.Value.Username = profileInfo.Username;
