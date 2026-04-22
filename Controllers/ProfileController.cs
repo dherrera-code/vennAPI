@@ -28,7 +28,14 @@ namespace vennAPI.Controllers
         [HttpPut("UpdateUserProfileByUserId/{id}")]
         public async Task<ActionResult<ProfileDTO>> UpdateUserProfileByUserId(int id, ProfileDTO profileInfo)
         {
-            return await _userService.UpdateProfileInfoByUserIdAsync(id, profileInfo);
+            try
+            {
+                return await _userService.UpdateProfileInfoByUserIdAsync(id, profileInfo);
+            }
+            catch (InvalidDataException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
