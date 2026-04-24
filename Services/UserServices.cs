@@ -74,7 +74,7 @@ namespace vennAPI.Services
                 issuer: "https://venngroupapi-emashqggf5gphwax.westus3-01.azurewebsites.net/",
                 audience: "https://venngroupapi-emashqggf5gphwax.westus3-01.azurewebsites.net/",
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(45),
+                expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: SigningCredentials
             );
 
@@ -189,9 +189,9 @@ namespace vennAPI.Services
         {
             var user = await GetUserByUserIdAsync(id);
             // lets update the userInfo
-            if (user.Value == null) throw new Exception("User Does Not Exist");
+            if (user.Value == null) throw new Exception();
 
-            // the nested if statement will throw an error if username exist and its actively taken by other users!
+            // the nested if statement will throw an error if username exist and its not the current username!
             if (await DoesUsernameExist(profileInfo.Username))
             {
                 if (profileInfo.Username != user.Value.Username)
