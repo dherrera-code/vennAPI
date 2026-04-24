@@ -10,7 +10,7 @@ namespace vennAPI.Models
     {
         public int Id { get; set; }
         public int RoomModelId { get; set; } // Foreign Key
-        public int? UserModelId { get; set; } // Foreign Key
+        public int UserModelId { get; set; } // Foreign Key
         public bool IsAccepted { get; set; } // If False, invite is sent BUT member hasn't accepted invitation else; user accepted room invitation!
         public bool IsDeleted { get; set; } = false;
 

@@ -122,7 +122,8 @@ namespace vennAPI.Services
                 item.MemberInfo.UserIcon,
                 // add more data here for availability!
                 // item.MemberInfo.Availability // this will return ALL member's availability!
-                Availability = item.MemberInfo.Availability.Where(day => day.Day == dayOfWeek.DayOfWeek)
+                Availability = item.MemberInfo.Availability
+                .Where(day => day.Day == dayOfWeek.DayOfWeek)
 
             })
             .ToListAsync();
@@ -178,6 +179,37 @@ namespace vennAPI.Services
             .ToListAsync();
 
             return roomsList;
+        }
+
+        public async Task<ActionResult<IEnumerable<RoomMember>>> GetRoomAvailabilitiesByRoomId(int roomId)
+        {
+            bool roomExist = await DoesRoomExist(roomId);
+            if(roomExist)
+            {
+                var list = await _dataContext.RoomMembers.Where(info => info.RoomModelId == roomId && info.IsAccepted && !info.IsDeleted)
+                // .Include(user => user.MemberInfo)
+                // .ThenInclude(u => u.Availability)
+                .ToListAsync();
+                return list;
+                // var roomMemberDTO = await _dataContext.RoomMembers.Select( member => new RoomMemberDTO
+                // {
+                //     RoomModelId = member.RoomModelId,
+                //     MemberId = member.UserModelId,
+                //     IsAccepted = member.IsAccepted,
+                //     MemberAvailability = 
+
+                // }).ToListAsync();
+
+            }
+            throw new Exception($"Room with room id: {roomId} does not exist!");
+        }
+
+        private async Task<bool> DoesRoomExist(int roomId)
+        {
+            var room =  await _dataContext.Rooms.FindAsync(roomId);
+            if(room != null) return true;
+
+            return false;
         }
     }
 }
