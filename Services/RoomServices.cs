@@ -158,6 +158,7 @@ namespace vennAPI.Services
                 RoomId = room.RoomModelId,
                 RoomTitle = room.Room.Title,
                 Category = room.Room.Category,
+                EventDate = room.Room.EventDate,
                 RequesterId = room.Room.UserId,
                 RequesterName = room.Room.UserModel.Username,
                 RequesterIcon = room.Room.UserModel.UserIcon

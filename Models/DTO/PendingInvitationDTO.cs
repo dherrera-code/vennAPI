@@ -10,6 +10,7 @@ namespace vennAPI.Models.DTO
         public int RoomId { get; set; }
         public string RoomTitle { get; set; }
         public string Category { get; set; }
+        public DateTime EventDate { get; set; }
         public int RequesterId { get; set; }
         public string RequesterName { get; set; }
         public string RequesterIcon { get; set; }
