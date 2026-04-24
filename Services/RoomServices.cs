@@ -150,9 +150,20 @@ namespace vennAPI.Services
             return await _dataContext.SaveChangesAsync() != 0;
         }
 
-        public async Task<List<RoomMember>> GetPendingInvitesByUserId(int userId)
+        public async Task<List<PendingInvitationDTO>> GetPendingInvitesByUserId(int userId)
         {
-            var invitationList = await _dataContext.RoomMembers.Where(item => item.UserModelId == userId && !item.IsAccepted && !item.IsDeleted).Include(item => item.Room).ToListAsync();
+            var invitationList = await _dataContext.RoomMembers.Where(item => item.UserModelId == userId && !item.IsAccepted && !item.IsDeleted)
+            .Select(room => new PendingInvitationDTO
+            {
+                RoomId = room.RoomModelId,
+                RoomTitle = room.Room.Title,
+                Category = room.Room.Category,
+                RequesterId = room.Room.UserId,
+                RequesterName = room.Room.UserModel.Username,
+                RequesterIcon = room.Room.UserModel.UserIcon
+            })
+            // .Include(item => item.Room)
+            .ToListAsync();
 
             return invitationList;
         }
