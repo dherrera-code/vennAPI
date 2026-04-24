@@ -24,10 +24,14 @@ namespace vennAPI.Controllers
         public async Task<ActionResult<bool>> InviteMemberToRoom(RoomMemberDTO newRoomMember)
         {
             // this endpoint will add an instance to the database
-            var result = await _roomService.InviteMemberToRoom(newRoomMember);
-            if(!result) throw new InvalidDataException("Invite is pending or member has joined the room!");
-
-            return true;
+            try
+            {
+            return  await _roomService.InviteMemberToRoom(newRoomMember);
+            }
+            catch (Exception message)
+            {
+                return BadRequest(message.Message);
+            }
         }
 
         [HttpGet("GetAllMembersByRoomId/{roomId}")]
