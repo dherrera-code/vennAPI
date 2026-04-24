@@ -42,7 +42,7 @@ namespace vennAPI.Controllers
         }
 
         [HttpGet("GetUserInvitationByUserId/{userId}")]
-        public async Task<ActionResult<IEnumerable<RoomMember>>> GetUsersInvitesByUser(int userId)
+        public async Task<ActionResult<IEnumerable<PendingInvitationDTO>>> GetUsersInvitesByUser(int userId)
         {
             // this function will return details of room name, 
             var invitesList = await _roomService.GetPendingInvitesByUserId(userId);
