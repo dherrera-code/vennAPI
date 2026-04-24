@@ -37,10 +37,30 @@ namespace vennAPI.Context
             .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<UserAvailability>()
-            .HasIndex(x => new {x.UserId, x.Day, x.Hour })
+            .HasIndex(x => new { x.UserId, x.Day, x.Hour })
             .IsUnique();
+
+            // modelBuilder.Entity<RoomModel>()
+            // .HasOne(r => r.UserModel)
+            // .WithMany()
+            // .HasForeignKey(r => r.UserId)
+            // .OnDelete(DeleteBehavior.Restrict); // or NoAction
+
+            // RoomMember → User (member)
+            modelBuilder.Entity<RoomMember>()
+                .HasOne(user => user.MemberInfo)
+                .WithMany()
+                .HasForeignKey(user => user.UserModelId)
+                .OnDelete(DeleteBehavior.Restrict); // THIS is the important one
+
+            // RoomMember → Room
+            // modelBuilder.Entity<RoomMember>()
+            //     .HasOne(rm => rm.Room)
+            //     .WithMany(r => r.Members)
+            //     .HasForeignKey(rm => rm.RoomModelId)
+            //     .OnDelete(DeleteBehavior.Cascade); // safe to keep cascade here
         }
-        
-        
+
+
     }
 }

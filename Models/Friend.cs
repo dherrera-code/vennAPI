@@ -14,8 +14,8 @@ namespace vennAPI.Models
         public FriendshipStatus Status { get; set; }
         public DateTime RequestedAt { get; set; } = DateTime.Now;
         public DateTime? AcceptedAt { get; set; }
-        public UserModel Requester { get; set; }
-        public UserModel Receiver { get; set; }
+        public UserModel? Requester { get; set; }
+        public UserModel? Receiver { get; set; }
         
     }
 
