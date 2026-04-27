@@ -137,7 +137,7 @@ namespace vennAPI.Services
 
         private async Task<RoomMember> DoesRoomMemberInstanceExist(RoomMemberDTO roomMember)
         {
-            return await _dataContext.RoomMembers.SingleOrDefaultAsync(member => member.RoomModelId == roomMember.RoomModelId && member.UserModelId == roomMember.MemberId);
+            return await _dataContext.RoomMembers.SingleOrDefaultAsync(member => member.RoomModelId == roomMember.RoomModelId && member.UserModelId == roomMember.MemberId && !member.IsDeleted);
         }
 
         public async Task<bool> RemoveMemberFromRoom(RoomMemberDTO memberToRemove)

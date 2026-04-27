@@ -61,7 +61,7 @@ namespace vennAPI.Controllers
         public async Task<ActionResult<bool>> RemoveMemberFromRoom(RoomMemberDTO memberToRemove)
         {
             var result = await _roomService.RemoveMemberFromRoom(memberToRemove);
-            if(!result) return BadRequest();
+            if(!result) return BadRequest("Unable to remove invite at this time.");
 
             return result;
         }
