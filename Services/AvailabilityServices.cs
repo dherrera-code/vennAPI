@@ -41,17 +41,17 @@ namespace vennAPI.Services
 
         private async Task<List<UserAvailability>> GetAllAvailabilityByUserId(int userId)
         {
-            return await _Context.UserAvailability.Where(user => user.UserId == userId).ToListAsync();
+            return await _Context.UserAvailability.AsNoTracking().Where(user => user.UserId == userId).ToListAsync();
         }
 
         public async Task<ActionResult<IEnumerable<UserAvailability>>> GetWeeklyAvailabilityByUserIdAsync(int userId)
         {
-            return await _Context.UserAvailability.Where(user => user.UserId == userId).ToListAsync();
+            return await _Context.UserAvailability.AsNoTracking().Where(user => user.UserId == userId).ToListAsync();
         }
 
         public async Task<ActionResult<IEnumerable<UserAvailability>>> GetDailyAvailabilityById(DayOfWeek dayOfWeek, int userId)
         {
-            return await _Context.UserAvailability.Where(user => user.UserId == userId && user.Day == dayOfWeek).ToListAsync();
+            return await _Context.UserAvailability.AsNoTracking().Where(user => user.UserId == userId && user.Day == dayOfWeek).ToListAsync();
         }
     }
 }
