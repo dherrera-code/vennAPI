@@ -181,7 +181,10 @@ namespace vennAPI.Services
 
         public async Task<ActionResult<IEnumerable<RoomModel>>> GetRelevantRoomsByUserIdAsync(int id)
         {
-            var roomsList = await _dataContext.Rooms.Where(room => room.UserId == id && !room.IsDeleted && room.IsRoomActive || room.Members.Any(m => m.UserModelId == id && m.IsAccepted && !m.IsDeleted) ).Include(joined => joined.Members)
+            var roomsList = await _dataContext.Rooms
+            .Where(room => room.UserId == id && !room.IsDeleted || room.Members
+            .Any(m => m.UserModelId == id && m.IsAccepted && !m.IsDeleted && !m.Room.IsDeleted) )
+            .Include(joined => joined.Members)
             .ToListAsync();
 
             return roomsList;
