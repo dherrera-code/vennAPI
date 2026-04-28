@@ -14,8 +14,10 @@ namespace vennAPI.Models
         public string? Title { get; set; }
         public string? Category { get; set; }
         public DateTime EventDate { get; set; }
+        //public string? Hour { get; set; } //adding this later
         
         public bool IsRoomActive { get; set; }
+        // public  bool IsRoomActive => EventDate >= DateTime.UtcNow;
         public bool IsDeleted { get; set; } = false;
 
         [ForeignKey("UserId")]

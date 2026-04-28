@@ -60,7 +60,7 @@ namespace vennAPI.Services
             return rooms;
         }
 
-        public async Task<ActionResult<RoomModel>> UpdateRoomAsync(int id, RoomModel updatedRoom)
+        public async Task<ActionResult<RoomModel>> UpdateRoomAsync(int id, RoomDTO updatedRoom)
         {
             var findRoom = await GetRoomByRoomIdAsync(id);
 

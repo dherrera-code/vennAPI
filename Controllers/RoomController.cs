@@ -61,7 +61,7 @@ namespace vennAPI.Controllers
         }
 
         [HttpPut("UpdateRoom/{id}")]
-        public async Task<ActionResult<RoomModel>> UpdateRoom(int id,[FromBody] RoomModel updatedRoom)
+        public async Task<ActionResult<RoomModel>> UpdateRoom(int id,[FromBody] RoomDTO updatedRoom)
         {
             return await _roomService.UpdateRoomAsync(id, updatedRoom);
         }
