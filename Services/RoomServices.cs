@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using vennAPI.Context;
@@ -40,7 +34,10 @@ namespace vennAPI.Services
         public async Task<IEnumerable<RoomModel>> GetAllRoomsAsync() => await _dataContext.Rooms.ToListAsync();
         public async Task<RoomModel> GetRoomByRoomIdAsync(int roomId)
         {
-            var mainRoom = await _dataContext.Rooms.Include(mem => mem.Members).FirstOrDefaultAsync(room => roomId == room.RoomId && !room.IsDeleted);
+            var mainRoom = await _dataContext.Rooms.Include(host => host.UserModel)
+            .ThenInclude(host => host.Availability)
+            .Include(mem => mem.Members.Where(mem => mem.IsAccepted && !mem.IsDeleted))
+            .FirstOrDefaultAsync(room => roomId == room.RoomId && !room.IsDeleted);
 
             return mainRoom;
         }
