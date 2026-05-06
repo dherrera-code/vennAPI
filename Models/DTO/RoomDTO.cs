@@ -11,7 +11,7 @@ namespace vennAPI.Models.DTO
         // RoomId is passed through the route!
         public string Title { get; set; }
         public string Category { get; set; }
-        public DateTime EventDate { get; set; }
+        public DateOnly EventDate { get; set; }
         public bool IsRoomActive { get; set; }
         // public int UserId { get; set; }
         // public string? Hour { get; set; }

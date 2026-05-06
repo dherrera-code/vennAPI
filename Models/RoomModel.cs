@@ -13,11 +13,12 @@ namespace vennAPI.Models
         public int RoomId { get; set; } // Primary Key!!
         public string? Title { get; set; }
         public string? Category { get; set; }
-        public DateTime EventDate { get; set; }
+        public DateOnly EventDate { get; set; }
+        public TimeOnly? GoldenHour { get; set; }
         //public string? Hour { get; set; } //adding this later
-        
-        public bool IsRoomActive { get; set; }
-        // public  bool IsRoomActive => EventDate >= DateTime.UtcNow;
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public bool IsRoomActive { get; set; } 
+
         public bool IsDeleted { get; set; } = false;
 
         [ForeignKey("UserId")]

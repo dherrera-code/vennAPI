@@ -24,6 +24,10 @@ namespace vennAPI.Context
         //This is used to override default conventions / configure relationships manually
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<RoomModel>()
+            .Property(r => r.IsRoomActive)
+            .HasComputedColumnSql("CASE WHEN EventDate >= GETUTCDATE() THEN 1 ELSE 0 END");
+
             modelBuilder.Entity<Friend>()
             .HasOne(f => f.Requester)
             .WithMany()
