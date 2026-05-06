@@ -163,7 +163,9 @@ namespace vennAPI.Services
 
         public async Task<ActionResult<UserModel>> GetUserByUserIdAsync(int id)
         {
-            var user = await _dataContext.Users.Include(user => user.RoomCreated).FirstOrDefaultAsync(user => user.UserId == id);
+            var user = await _dataContext.Users
+            .Include(user => user.RoomCreated)
+            .FirstOrDefaultAsync(user => user.UserId == id);
 
             // if(user == null) return NotFound();
             return user;

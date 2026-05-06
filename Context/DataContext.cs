@@ -26,7 +26,7 @@ namespace vennAPI.Context
         {
             modelBuilder.Entity<RoomModel>()
             .Property(r => r.IsRoomActive)
-            .HasComputedColumnSql("CASE WHEN EventDate >= GETUTCDATE() THEN 1 ELSE 0 END");
+            .HasComputedColumnSql("CASE WHEN EventDate >= GETUTCDATE() THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END");
 
             modelBuilder.Entity<Friend>()
             .HasOne(f => f.Requester)
