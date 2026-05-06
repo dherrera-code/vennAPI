@@ -6,7 +6,9 @@ namespace vennAPI.Models
     {
         [Key]
         public int UserId { get; set; }
+        // [MaxLength(30)]
         public string Username { get; set; }
+        // [MaxLength(40)]
         public string Email { get; set; }
         public string? Salt { get; set; }
         public string? Hash { get; set; }
