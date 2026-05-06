@@ -102,7 +102,7 @@ namespace vennAPI.Services
 
         public async Task<ActionResult<IEnumerable<Object>>> GetAllJoinedMembersByRoom(int roomId)
         {
-            DateTime dayOfWeek = await _dataContext.Rooms.Where(r => r.RoomId == roomId).Select(date => date.EventDate).FirstOrDefaultAsync();
+            DateOnly dayOfWeek = await _dataContext.Rooms.Where(r => r.RoomId == roomId).Select(date => date.EventDate).FirstOrDefaultAsync();
 
             return await _dataContext.RoomMembers.Where(item => item.RoomModelId == roomId && item.IsAccepted && !item.IsDeleted).Select(item => new
             {
