@@ -81,6 +81,7 @@ namespace vennAPI.Services
             if(entry == null) return null;
 
             entry.Status = FriendshipStatus.Accepted;
+            entry.AcceptedAt = DateTime.UtcNow;
             _dataContext.Update(entry);
             await _dataContext.SaveChangesAsync();
             return entry;
@@ -103,6 +104,15 @@ namespace vennAPI.Services
                 }
             }
             return true;
+        }
+        public async Task<bool> RemoveFriendInviteAsync(int requesterId, int receiverId)
+        {
+            var entry = await GetFriendEntryById(requesterId, receiverId);
+            if(entry == null) return false;
+
+            // entry.Status = FriendshipStatus.Deleted;
+            _dataContext.Remove(entry);
+            return await _dataContext.SaveChangesAsync() != 0;
         }
     }
 }

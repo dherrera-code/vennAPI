@@ -41,5 +41,14 @@ namespace vennAPI.Controllers
 
             return result;
         }
+        [HttpPut("DenyFriendRequestByRequestId/{requesterId}/{receiverId}")]
+        public async Task<ActionResult<bool>> RemoveFriendStatusToDenied(int requesterId, int receiverId)
+        {
+            var result = await _friendService.RemoveFriendInviteAsync(requesterId, receiverId);
+
+            if(!result) throw new InvalidDataException("object does not exist");
+
+            return result;
+        }
     }
 }
