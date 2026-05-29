@@ -48,7 +48,7 @@ namespace vennAPI.Context
                 .HasOne(user => user.MemberInfo)
                 .WithMany()
                 .HasForeignKey(user => user.UserModelId)
-                .OnDelete(DeleteBehavior.Restrict); // THIS is the important one
+                .OnDelete(DeleteBehavior.Restrict); 
         }
 
 

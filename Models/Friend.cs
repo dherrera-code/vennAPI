@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using vennAPI.Models.DTO;
-
 namespace vennAPI.Models
 {
     public class Friend
@@ -16,7 +10,6 @@ namespace vennAPI.Models
         public DateTime? AcceptedAt { get; set; }
         public UserModel? Requester { get; set; }
         public UserModel? Receiver { get; set; }
-        
     }
 
     public enum FriendshipStatus

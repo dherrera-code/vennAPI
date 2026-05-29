@@ -7,6 +7,7 @@ namespace vennAPI.Models.DTO
 {
     public class AvailabilityDTO
     {
+        public int Id { get; set; }
         public DayOfWeek Day { get; set; }
         public int Hour { get; set; }
         public AvailabilityStatus Status { get; set; }
